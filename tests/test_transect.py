@@ -34,11 +34,13 @@ stations.loc[t_stations, "distance"] = dc.maps.get_route_distance(
 #Create transect_distance column and fill it with nan values
 btl["distance"] = stations.loc[btl.station].distance.values
 
-#%% Make with also extra start and end points
+# Make with also extra start and end points
 route_lon = stations.loc[t_stations].longitude.values
 route_lat = stations.loc[t_stations].latitude.values
 
 #%%
+#########################Changes by Marina from here on ###############################
+
 def extend_route(route_lon, route_lat, extra_fraction=0.05):
     """Add extra points at the start and end of a route.
     
@@ -95,135 +97,24 @@ def extend_route(route_lon, route_lat, extra_fraction=0.05):
 
 #%% Apply function
 route_lon_ext, route_lat_ext, route_distance_ext = extend_route(route_lon, route_lat)
-#%%
+#%% Plot route to check
 fig, ax = plt.subplots(dpi=300)
 ax.scatter(route_lon, route_lat)
 ax.scatter(route_lon_ext, route_lat_ext, marker='x')
 
 # %%
-
 f_settings = {
-    # 'pb_final': dict(clabel='Pb [nmol L$^{-1}$]',
-    #                   vmin=0,
-    #                   vmax=0.075,
-    #                   comap=cmo.cm.matter),
-    # 'final_fe': dict(clabel='Fe [nmol L$^{-1}$]',
-    #                   vmin=0,
-    #                   vmax=6,
-    #                   comap=cmo.cm.matter),
-    # 'cu_final': dict(clabel='Cu [nmol L$^{-1}$]',
-    #                   vmin=1.14,
-    #                   vmax=4.15,
-    #                   comap=cmo.cm.matter),
-    # 'zn_final': dict(clabel='Zn [nmol L$^{-1}$]',
-    #                   vmin=0.03,
-    #                   vmax=2.72,
-    #                   comap=cmo.cm.matter),
-    # 'ti_final': dict(clabel='Ti [nmol L$^{-1}$]',
-    #                   vmin=0.03,
-    #                   vmax=0.5,
-    #                   comap=cmo.cm.matter),
-    # 'y_final': dict(clabel='Y [nmol L$^{-1}$]',
-    #                   vmin=0.07,
-    #                   vmax=0.25,
-    #                   comap=cmo.cm.matter),
-    # 'co_final': dict(clabel='Co [nmol L$^{-1}$]',
-    #                   vmin=0.05,
-    #                   vmax=0.3,
-    #                   comap=cmo.cm.matter),
-    # 'mn_final': dict(clabel='Mn [nmol L$^{-1}$]',
-    #                   vmin=0.37,
-    #                   vmax=34.3,
-    #                   comap=cmo.cm.matter),
-    # 'ni_final': dict(clabel='Ni [nmol L$^{-1}$]',
-    #                   vmin=3,
-    #                   vmax=5.2,
-    #                   comap=cmo.cm.matter),
-    # 'cd_final': dict(clabel='Cd [nmol L$^{-1}$]',
-    #                   vmin=0.04,
-    #                   vmax=0.23,
-    #                   comap=cmo.cm.matter),
-    # 'turbidity': dict(clabel='Turbidity [NTU]',
-    #                   vmin=0.04,
-    #                   vmax=0.3,
-    #                   comap=cmo.cm.turbid),
-    # 'temperature': dict(clabel='T [°C]',
-    #                   vmin=-0.7,
-    #                   vmax=11,
-    #                   comap=cmo.cm.thermal),
-    # 'salinity': dict(clabel='Salinity [PSU]',
-    #                   vmin=30.7,
-    #                   vmax=35.5,
-    #                   comap=cmo.cm.haline),
-    # 'aou': dict(clabel='AUO',
-    #                   vmin=-33,
-    #                   vmax=62,
-    #                   comap=cmo.cm.deep),
-    # 'phosphate': dict(clabel='Phosphate [μmol L$^{-1}$]',
-    #                   vmin=0.01,
-    #                   vmax=1.03,
-    # #                   comap=cmo.cm.dense),
-    # "fluorescence_chelsea": dict(
-    #     clabel="Fluorescence", vmin=0.02, vmax=2.6, comap=cmo.cm.algae
-    # ),
-    # 'nitrite': dict(clabel='Nitrite [μmol L$^{-1}$]',
-    #                   vmin=0,
-    #                   vmax=0.52,
-    #                   comap=cmo.cm.dense),
-    # 'nitrate': dict(clabel='Nitrate [μmol L$^{-1}$]',
-    #                   vmin=0,
-    #                   vmax=15.2,
-    #                   comap=cmo.cm.dense),
-    # 'ammonia': dict(clabel='Ammonia [μmol L$^{-1}$]',
-    #                   vmin=0,
-    #                   vmax=2.3,
-    #                   comap=cmo.cm.dense),
-    # 'silicate': dict(clabel='Silicate [μmol L$^{-1}$]',
-    #                   vmin=0,
-    #                   vmax=13,
-    #                   comap=cmo.cm.dense),
-    # 'nitrxte': dict(clabel='Nitrxte [μmol L$^{-1}$]',
-    #                  vmin=0,
-    #                  vmax=15,
-    #                  comap=cmo.cm.dense),
-    # 'fco2': dict(clabel='fCO2 [μatm]',
-    #                  vmin=280,
-    #                  vmax=455,
-    #                  comap=cmo.cm.matter),
-    # 'pCO2_TA-pH': dict(clabel='pCO2_TA-pH [μatm]',
-    #                  vmin=280,
-    #                  vmax=456,
-    #                  comap=cmo.cm.matter),
-    # 'DIC_TA-pH': dict(clabel='DIC_TA-pH [μmol L$^{-1}$]',
-    #                  vmin=2030,
-    #                  vmax=2175,
-    #                  comap=cmo.cm.matter),
-    # 'dic_vindta': dict(clabel='DIC_vindta [μmol L$^{-1}$]',
-    #                  vmin=2055,
-    #                  vmax=2231,
-    #                  comap=cmo.cm.matter),
-    # 'pH_spectro_total_insitu': dict(clabel='pH_spectro',
-    #                  vmin=7.99,
-    #                  vmax=8.18,
-    #                  comap=cmo.cm.dense),
-    # 'sigma0': dict(clabel='Sigma0',
-    #                   vmin=23.55,
-    #                   vmax=27.93,
-    #                   comap=cmo.cm.thermal),
-    # 'alkalinity': dict(clabel='TA [μmol L$^{-1}$]',
-    #                   vmin=2211,
-    #                   vmax=2330.7,
-    #                   comap=cmo.cm.haline),
-    'NP_ratio': dict(clabel='N:P ratio',
-                      vmin=1,
-                      vmax=17,
-                      comap=cmo.cm.haline),
+    'pb_final': dict(clabel='Pb [nmol L$^{-1}$]',
+                      vmin=0,
+                      vmax=0.075,
+                      comap='viridis'),
+   
 }
 #%% 
 # Loop through f_settings to get the z variable and the settings for that variable
 for zvar, settings in f_settings.items():
     L = np.isin(btl["station"], t_stations)
-    x = btl[L]["transect_distance"].values
+    x = btl[L]["distance"].values
     y = btl[L]["depth"].values
     z = btl[L][zvar].values
 
@@ -302,8 +193,8 @@ for zvar, settings in f_settings.items():
     ax.set_ylabel("Depth [m]", family="serif")
 
     font_prop = FontProperties(family="serif")
-    bounds = np.linspace(settings["vmin"], settings["vmax"], num=cmap.N)
-    norm = mpl.colors.BoundaryNorm(boundaries=bounds, ncolors=cmap.N)
+    bounds = np.linspace(settings["vmin"], settings["vmax"], num=cmap)
+    norm = mpl.colors.BoundaryNorm(boundaries=bounds, ncolors=cmap)
     cb = fig.colorbar(
         mpl.cm.ScalarMappable(norm=norm, cmap=settings["comap"]),
         ax=ax,
